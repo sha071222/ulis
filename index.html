@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>ULIS Home away from home – Dự án hỗ trợ sinh viên xa nhà</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #111827;
+      --card: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --accent-2: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.4);
+      --radius-lg: 1.4rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.16), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(11, 15, 25, 0.96),
+        rgba(11, 15, 25, 0.85),
+        transparent
+      );
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 30%, #facc15, #22c55e 40%, #0ea5e9 75%);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: inherit;
+      border: 2px solid rgba(15, 23, 42, 0.85);
+    }
+
+    .logo-text-title {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .logo-text-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.1rem;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-2), #a855f7);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .btn-nav {
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.98);
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+      transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-nav:hover {
+      background: #020617;
+      border-color: rgba(209, 213, 219, 0.9);
+      transform: translateY(-1px);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.8rem 1.25rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 2.6rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.28rem 0.65rem 0.28rem 0.28rem;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.75rem;
+      color: #e5e7eb;
+      margin-bottom: 1.4rem;
+    }
+
+    .badge-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, var(--accent), #166534);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 3.7vw + 1rem, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 1.1;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #facc15, #22c55e, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--muted);
+      max-width: 32rem;
+      margin-bottom: 1.7rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      margin-bottom: 1.7rem;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 1.6rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, var(--accent), #bbf7d0);
+      color: #022c22;
+      box-shadow: 0 16px 38px rgba(34, 197, 94, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 19px 46px rgba(34, 197, 94, 0.45);
+    }
+
+    .btn-ghost {
+      padding: 0.78rem 1.35rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(31, 41, 55, 0.96);
+      border-color: rgba(209, 213, 219, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .hero-meta-item span {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .hero-card {
+      position: relative;
+      max-width: 360px;
+      margin-left: auto;
+      padding: 1.6rem;
+      border-radius: 1.6rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.27), transparent 60%),
+        radial-gradient(circle at 100% 0, rgba(52, 211, 153, 0.25), transparent 60%),
+        rgba(15, 23, 42, 0.97);
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.96);
+      font-size: 0.85rem;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .hero-card-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .hero-card-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .hero-card-row strong {
+      color: var(--text);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.98);
+      overflow: hidden;
+      margin: 0.35rem 0 1.1rem;
+    }
+
+    .progress-fill {
+      width: 72%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #a3e635);
+    }
+
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-card-grid div span {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .avatar-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid #020617;
+      margin-right: -7px;
+      background: linear-gradient(135deg, #facc15, #22c55e);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    }
+
+    .avatar:nth-child(2) {
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+    }
+
+    .avatar:nth-child(3) {
+      background: linear-gradient(135deg, #f97316, #ec4899);
+    }
+
+    .hero-floating-tag {
+      position: absolute;
+      top: -18px;
+      right: -10px;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.99);
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      font-size: 0.72rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 18px 38px rgba(30, 64, 175, 0.8);
+    }
+
+    .hero-floating-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 9px rgba(56, 189, 248, 0.9);
+    }
+
+    section {
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 1.8rem;
+      text-align: left;
+    }
+
+    .section-kicker {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.94rem;
+      color: var(--muted);
+      max-width: 38rem;
+    }
+
+    .layout-2col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1.4rem 1.5rem;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.95);
+      font-size: 0.9rem;
+    }
+
+    .card + .card {
+      margin-top: 1.1rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.45rem;
+      font-weight: 600;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    ul {
+      margin-left: 1.1rem;
+      margin-top: 0.3rem;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+
+    .feature-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1.25rem 1.3rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      font-size: 0.88rem;
+    }
+
+    .feature-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #facc15, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.7rem;
+      font-size: 1.2rem;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      font-size: 0.95rem;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      color: var(--muted);
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+      font-size: 0.88rem;
+    }
+
+    .timeline-card {
+      padding: 1.1rem 1.2rem;
+      border-radius: 1.1rem;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(55, 65, 81, 0.95);
+    }
+
+    .timeline-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-list {
+      margin-left: 0.95rem;
+      margin-top: 0.2rem;
+    }
+
+    .timeline-list li {
+      margin-bottom: 0.15rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    th, td {
+      padding: 0.55rem 0.6rem;
+      border-bottom: 1px solid rgba(55, 65, 81, 0.9);
+      text-align: left;
+    }
+
+    th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    tbody tr:nth-child(odd) {
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .highlight {
+      color: #facc15;
+      font-weight: 600;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem 1.3rem;
+      font-size: 0.88rem;
+    }
+
+    .team-item strong {
+      display: block;
+    }
+
+    .cta {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background:
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 55%),
+        rgba(15, 23, 42, 0.98);
+      padding: 1.6rem 1.7rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.8rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .cta h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .cta p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .cta-info {
+      font-size: 0.88rem;
+    }
+
+    .cta-info div {
+      margin-bottom: 0.2rem;
+    }
+
+    .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(148, 163, 184, 0.85);
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+    }
+
+    footer {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 1.4rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.95);
+      background: #020617;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-visual {
+        order: -1;
+      }
+      .layout-2col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .grid-3,
+      .timeline {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .cta {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 2.2rem;
+      }
+      section {
+        padding-inline: 1rem;
+      }
+      .card,
+      .feature-card,
+      .cta {
+        padding: 1.2rem 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="nav">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <div>
+            <div class="logo-text-title">ULIS HOME AWAY FROM HOME</div>
+            <div class="logo-text-sub">Dự án hỗ trợ sinh viên xa nhà</div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#about">Giới thiệu</a>
+          <a href="#solution">Hoạt động</a>
+          <a href="#timeline">Kế hoạch</a>
+          <a href="#budget">Kinh phí</a>
+          <a href="#team">Nhóm 24</a>
+        </nav>
+        <button class="btn-nav" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">
+          Liên hệ dự án
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div>
+          <div class="hero-badge">
+            <div class="badge-dot"></div>
+            <span>Đề xuất dự án – Trường Đại học Ngoại ngữ – ĐHQGHN</span>
+          </div>
+          <h1 class="hero-title">
+            <span>“ULIS Home away from home”</span><br />
+            Mang hơi ấm gia đình đến trường.
+          </h1>
+          <p class="hero-subtitle">
+            Dự án hướng tới xây dựng một không gian thân thiện, an toàn và gắn kết cho sinh viên xa nhà,
+            đặc biệt là tân sinh viên, để các bạn có thể chia sẻ, kết nối và thích nghi tốt hơn với cuộc sống tại ULIS và Hà Nội.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="document.querySelector('#solution').scrollIntoView({behavior:'smooth'})">
+              Xem các hoạt động chính →
+            </button>
+            <button class="btn-ghost" onclick="document.querySelector('#timeline').scrollIntoView({behavior:'smooth'})">
+              Kế hoạch triển khai chi tiết
+            </button>
+          </div>
+
+          <div class="hero-meta">
+            <div class="hero-meta-item">
+              <span>10/2025 – 03/2026</span>
+              Thời gian dự kiến triển khai
+            </div>
+            <div class="hero-meta-item">
+              <span>Nhóm 24</span>
+              Lớp CNTT&amp;TT FLF1007
+            </div>
+            <div class="hero-meta-item">
+              <span>22.250.000đ</span>
+              Tổng dự toán kinh phí
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <p class="hero-card-title">Sinh viên xa nhà tại ULIS</p>
+              <span class="hero-card-tag">Nhóm đối tượng chính</span>
+            </div>
+            <div class="hero-card-row">
+              <span><strong>Thách thức:</strong> nhớ nhà, sốc môi trường, áp lực học tập</span>
+            </div>
+            <div class="hero-card-row">
+              <span><strong>Giải pháp:</strong> xây dựng cộng đồng chia sẻ &amp; đồng hành</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+            <div class="hero-card-grid">
+              <div>
+                <span>01</span>
+                Fanpage / website hỗ trợ
+              </div>
+              <div>
+                <span>02</span>
+                Workshop kỹ năng sống xa nhà
+              </div>
+              <div>
+                <span>01</span>
+                Talkshow “Cà phê cùng anh/chị khóa trên”
+              </div>
+            </div>
+            <div class="hero-card-footer">
+              <div>
+                Đơn vị chủ quản<br />
+                <strong>Trường ĐH Ngoại ngữ – ĐHQGHN</strong>
+              </div>
+              <div class="avatar-group">
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+                <div class="avatar"></div>
+              </div>
+            </div>
+
+            <div class="hero-floating-tag">
+              <div class="hero-floating-dot"></div>
+              <span>Lan tỏa thông điệp “ULIS – ngôi nhà thứ hai”</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="section-inner">
+          <div class="layout-2col">
+            <div>
+              <div class="section-header">
+                <p class="section-kicker">GIỚI THIỆU DỰ ÁN</p>
+                <h2 class="section-title">Bối cảnh &amp; vấn đề đặt ra</h2>
+                <p class="section-subtitle">
+                  Khi bước vào cánh cửa đại học, nhiều tân sinh viên – đặc biệt là sinh viên ngoại tỉnh –
+                  phải rời xa gia đình, đối mặt với môi trường hoàn toàn mới, nhịp sống nhanh và nhiều áp lực.
+                  Điều này dễ dẫn tới cảm giác bỡ ngỡ, cô đơn, stress và khó thích nghi.
+                </p>
+              </div>
+
+              <div class="card">
+                <h3>Những khó khăn chính của sinh viên xa nhà</h3>
+                <ul>
+                  <li>Thiếu kinh nghiệm sống độc lập và kỹ năng tự quản lý bản thân.</li>
+                  <li>Sốc môi trường sống: chi phí, giao thông, nhịp sống đô thị, ở trọ/ký túc xá.</li>
+                  <li>Thiếu môi trường kết nối, chia sẻ để được đồng cảm và hỗ trợ tinh thần.</li>
+                </ul>
+                <p class="muted" style="margin-top:0.6rem;">
+                  Trong ba nguyên nhân trên, dự án tập trung vào việc
+                  <span class="highlight">xây dựng môi trường kết nối và chia sẻ</span>, bởi đây là yếu tố
+                  có thể can thiệp hiệu quả, bền vững và phù hợp với thế mạnh của ULIS.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <div class="card">
+                <h3>Mục tiêu của “ULIS Home away from home”</h3>
+                <ul>
+                  <li>Tạo một “ngôi nhà thứ hai” cho sinh viên xa nhà ngay tại ULIS.</li>
+                  <li>Xây dựng cộng đồng sinh viên gắn kết, sẵn sàng chia sẻ và hỗ trợ nhau.</li>
+                  <li>Hỗ trợ sinh viên hình thành kỹ năng tự lập, tự chăm sóc bản thân và thích nghi tích cực.</li>
+                </ul>
+                <div class="pill-row">
+                  <span class="pill">Sinh viên năm nhất</span>
+                  <span class="pill">Sinh viên ngoại tỉnh</span>
+                  <span class="pill">Sức khỏe tinh thần</span>
+                  <span class="pill">Kết nối cộng đồng</span>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>Sản phẩm &amp; kết quả mong đợi</h3>
+                <ul>
+                  <li>Fanpage / website “ULIS Home away from home”.</li>
+                  <li>Chuỗi workshop về kỹ năng sống xa nhà.</li>
+                  <li>Talkshow “Cà phê cùng anh/chị khóa trên”.</li>
+                  <li>Xây dựng mạng lưới sinh viên hỗ trợ lẫn nhau qua nhiều thế hệ.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLUTION / ACTIVITIES -->
+      <section id="solution">
+        <div class="section-inner">
+          <div class="section-header">
+            <p class="section-kicker">HOẠT ĐỘNG CHÍNH</p>
+            <h2 class="section-title">Giải pháp: từ online đến offline</h2>
+            <p class="section-subtitle">
+              Dự án kết hợp nền tảng online (website, fanpage) với các hoạt động trực tiếp
+              (workshop, talkshow) để vừa cung cấp thông tin, vừa tạo không gian gặp gỡ và gắn kết.
+            </p>
+          </div>
+
+          <div class="grid-3">
+            <div class="feature-card">
+              <div class="feature-icon">🌐</div>
+              <h3 class="feature-title">Fanpage / Website dự án</h3>
+              <p class="muted">
+                Chia sẻ bài viết, video, cẩm nang sống xa nhà, kinh nghiệm học tập và câu chuyện thực tế từ
+                chính sinh viên ULIS.
+              </p>
+              <span class="tag">“ULIS Home away from home”</span>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">🎓</div>
+              <h3 class="feature-title">Chuỗi workshop kỹ năng</h3>
+              <p class="muted">
+                02 buổi workshop về quản lý chi tiêu, giao tiếp – kết nối, cân bằng học tập – cuộc sống
+                dành cho sinh viên xa nhà.
+              </p>
+              <span class="tag">Kỹ năng sống xa nhà</span>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">☕</div>
+              <h3 class="feature-title">Talkshow “Cà phê cùng anh/chị khóa trên”</h3>
+              <p class="muted">
+                Không gian gần gũi để tân sinh viên trò chuyện, hỏi đáp trực tiếp với anh/chị khóa trên
+                và cựu sinh viên.
+              </p>
+              <span class="tag">Chia sẻ – đồng hành</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section id="timeline">
+        <div class="section-inner">
+          <div class="section-header">
+            <p class="section-kicker">KẾ HOẠCH TRIỂN KHAI</p>
+            <h2 class="section-title">Lộ trình thực hiện 10/2025 – 03/2026</h2>
+            <p class="section-subtitle">
+              Dự án được triển khai theo các giai đoạn rõ ràng: chuẩn bị – truyền thông – tổ chức hoạt động – đánh giá và duy trì.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-card">
+              <div class="timeline-label">10 – 11/2025</div>
+              <div class="timeline-title">Giai đoạn 1: Chuẩn bị &amp; xây nền tảng</div>
+              <ul class="timeline-list">
+                <li>Lập đề xuất và khung ý tưởng dự án.</li>
+                <li>Hoàn thiện hồ sơ xin phê duyệt.</li>
+                <li>Xây dựng bộ nhận diện (tên, logo, slogan).</li>
+                <li>Thiết kế fanpage, landing page / website.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-card">
+              <div class="timeline-label">11/2025 – 01/2026</div>
+              <div class="timeline-title">Giai đoạn 2: Truyền thông &amp; hoạt động</div>
+              <ul class="timeline-list">
+                <li>Chuẩn bị nội dung truyền thông, video, bài viết.</li>
+                <li>Ra mắt fanpage/website “ULIS – ngôi nhà thứ hai”.</li>
+                <li>Tổ chức 02 workshop kỹ năng sống xa nhà.</li>
+                <li>Thực hiện talkshow “Cà phê cùng anh/chị khóa trên”.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-card">
+              <div class="timeline-label">01 – 03/2026</div>
+              <div class="timeline-title">Giai đoạn 3: Đánh giá &amp; phát triển</div>
+              <ul class="timeline-list">
+                <li>Khảo sát, thu thập phản hồi sinh viên tham gia.</li>
+                <li>Đánh giá hiệu quả và tác động dự án.</li>
+                <li>Tổng kết, lập báo cáo và đề xuất hướng duy trì lâu dài.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUDGET -->
+      <section id="budget">
+        <div class="section-inner">
+          <div class="section-header">
+            <p class="section-kicker">DỰ TOÁN KINH PHÍ</p>
+            <h2 class="section-title">Chi phí dự kiến cho toàn bộ dự án</h2>
+            <p class="section-subtitle">
+              Kinh phí dự kiến được sử dụng cho công tác chuẩn bị nội dung, xây dựng nền tảng truyền thông,
+              tổ chức workshop, talkshow và quà tặng dành cho sinh viên tham gia.
+            </p>
+          </div>
+
+          <div class="card">
+            <table>
+              <thead>
+              <tr>
+                <th>STT</th>
+                <th>Hạng mục</th>
+                <th>Nội dung</th>
+                <th class="text-right">Thành tiền (VNĐ)</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>Xây dựng đề án chi tiết</td>
+                <td>Soạn thảo, hoàn thiện kế hoạch hoạt động</td>
+                <td class="text-right">500.000</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Khảo sát thực tế</td>
+                <td>Khảo sát sinh viên ngoại tỉnh, nhu cầu hỗ trợ</td>
+                <td class="text-right">1.200.000</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Tài liệu sử dụng trong đề án</td>
+                <td>Biên soạn cẩm nang, hướng dẫn sinh viên mới</td>
+                <td class="text-right">1.500.000</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Thẩm định tài liệu</td>
+                <td>Đánh giá và hiệu chỉnh trước khi công bố</td>
+                <td class="text-right">1.000.000</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Website / landing page</td>
+                <td>Thiết kế giao diện &amp; nội dung trang chính thức</td>
+                <td class="text-right">2.200.000</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Thẩm định nội dung truyền thông</td>
+                <td>Kiểm tra, duyệt nội dung đăng tải</td>
+                <td class="text-right">1.000.000</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Truyền thông – quảng bá</td>
+                <td>In ấn ấn phẩm, poster, quảng bá online</td>
+                <td class="text-right">2.050.000</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Workshop “Kỹ năng sống xa nhà”</td>
+                <td>Thuê hội trường, trang trí, nước uống, backdrop (02 buổi)</td>
+                <td class="text-right">4.000.000</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Bộ quà tặng mini</td>
+                <td>Túi tote, sổ tay, bản đồ Hà Nội, voucher, sim 4G,... (50 suất)</td>
+                <td class="text-right">7.500.000</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Talkshow “Cà phê cùng anh/chị khóa trên”</td>
+                <td>Thuê địa điểm, vé mời, mời diễn giả</td>
+                <td class="text-right">4.500.000</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <th colspan="3">Tổng kinh phí dự kiến</th>
+                <th class="text-right highlight">22.250.000</th>
+              </tr>
+              </tfoot>
+            </table>
+            <p class="muted" style="margin-top:0.8rem;">
+              (* Chi tiết mức tài trợ đề nghị từ các đơn vị trong/ngoài trường có thể điều chỉnh tùy theo nguồn lực
+              và hình thức phối hợp.)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEAM & CONTACT -->
+      <section id="team">
+        <div class="section-inner">
+          <div class="section-header">
+            <p class="section-kicker">ĐƠN VỊ THỰC HIỆN</p>
+            <h2 class="section-title">Nhóm 24 – Lớp CNTT&amp;TT FLF1007</h2>
+            <p class="section-subtitle">
+              Dự án được xây dựng từ chính trải nghiệm của các thành viên – những người từng là sinh viên xa nhà,
+              thấu hiểu cảm giác lạc lõng, nhớ nhà và mong muốn tạo ra một “ngôi nhà thứ hai” cho các bạn khóa sau.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Thành viên nhóm</h3>
+            <div class="team-grid" style="margin-top:0.6rem;">
+              <div class="team-item">
+                <strong>Nguyễn Ngọc Hà</strong>
+                MSSV: 24040439 – Nhóm trưởng
+              </div>
+              <div class="team-item">
+                <strong>Lê Phương Hà</strong>
+                MSSV: 24040433
+              </div>
+              <div class="team-item">
+                <strong>Nguyễn Thị Thúy Hà</strong>
+                MSSV: 24040440
+              </div>
+              <div class="team-item">
+                <strong>Nguyễn Thị Thu Hà</strong>
+                MSSV: 21030541
+              </div>
+              <div class="team-item">
+                <strong>Phạm Minh Hà</strong>
+                MSSV: 21050628
+              </div>
+              <div class="team-item">
+                <strong>Quách Sơn Hà</strong>
+                MSSV: 24041070
+              </div>
+              <div class="team-item">
+                <strong>Vũ Phương Hà</strong>
+                MSSV: 24040050
+              </div>
+            </div>
+          </div>
+
+          <div id="contact" class="cta">
+            <div>
+              <div class="badge-soft">
+                <span class="dot"></span>
+                Liên hệ &amp; phối hợp dự án
+              </div>
+              <h3>Trở thành một phần của “ULIS – ngôi nhà thứ hai”.</h3>
+              <p>
+                Dự án rất mong nhận được sự quan tâm, hỗ trợ và bảo trợ từ Ban Giám hiệu, các phòng ban,
+                các đơn vị truyền thông trong và ngoài Nhà trường, cũng như các câu lạc bộ, tổ đội sinh viên.
+              </p>
+              <div class="hero-actions" style="margin-top:1rem;">
+                <button class="btn-primary">
+                  Tải đề xuất (bản PDF)
+                </button>
+                <button class="btn-ghost" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                  Quay lại đầu trang ↑
+                </button>
+              </div>
+            </div>
+
+            <div class="cta-info">
+              <div><strong>Đơn vị chủ quản:</strong> Trường ĐH Ngoại ngữ – ĐHQGHN</div>
+              <div><strong>Đơn vị thực hiện:</strong> Nhóm 24 – Lớp CNTT&amp;TT FLF1007</div>
+              <div><strong>Đơn vị phối hợp dự kiến:</strong></div>
+              <ul style="margin-left:1rem; margin-top:0.2rem;">
+                <li>Trung tâm CNTT&amp;TT (TT CNTT&amp;TT&amp;HL)</li>
+                <li>ULIS TV, nhóm ICT – ULIS, các đơn vị truyền thông sinh viên</li>
+                <li>Phòng Kế hoạch – Tài chính; Phòng Đào tạo và Người học</li>
+              </ul>
+              <div style="margin-top:0.7rem;">
+                <strong>Đầu mối liên hệ:</strong><br />
+                Nguyễn Ngọc Hà – Nhóm trưởng<br />
+                Email: <a href="mailto:ngngocha2516@gmail.com">ngngocha2516@gmail.com</a><br />
+                SĐT: 0763 573 563
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Hà Nội, ngày 17 tháng 11 năm 2025 – Nhóm 24, Trường Đại học Ngoại ngữ – Đại học Quốc gia Hà Nội.
+    </footer>
+  </div>
+</body>
+</html>
